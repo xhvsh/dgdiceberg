@@ -1,33 +1,31 @@
-let list = document.querySelector(".list")
-let overlay = document.querySelector(".overlay")
-let popup = document.querySelector(".popup")
+const api = "https://xhvsh.github.io/icebergapi/iceberg.json",
+  container = document.querySelector(".container");
 
 async function getData() {
-  let response = await fetch(`https://xhvsh.github.io/icebergapi/iceberg.json`)
-  let rawData = await response.json()
-  let data = rawData.data
+  try {
+    const response = await fetch(api);
+    const data = await response.json();
 
-  for (let i = 0; i < data.length; i++) {
-    list.innerHTML += `
-    <div class="word" data-exp="${data[i].explanation}">${data[i].phrase}</div>
-    `
+    if (Array.isArray(data?.data)) {
+      data.data.forEach((item) => {
+        let explanation =
+          item?.explanation === ""
+            ? "Samborowi nie chcialo sie dodawac wyjasnienia"
+            : item?.explanation;
+
+        if (item?.phrase) {
+          container.innerHTML += `<div class="content">${item.phrase}<div class='tooltip'>${explanation}</div></div>`;
+        }
+      });
+    }
+
+    let tooltips = document.querySelectorAll(".tooltip");
+    for (let i = 0; i < 40; i++) {
+      tooltips[i].classList.add("bottom");
+    }
+  } catch (err) {
+    console.error(err);
   }
-
-  let words = document.querySelectorAll(".word")
-  words.forEach((word) => {
-    word.addEventListener("click", () => {
-      overlay.classList.remove("hidden")
-      popup.classList.remove("hiddenpopup")
-
-      popup.innerHTML += `${word.getAttribute("data-exp")}`
-    })
-  })
 }
 
-getData()
-
-overlay.addEventListener("click", () => {
-  overlay.classList.add("hidden")
-  popup.classList.add("hiddenpopup")
-  popup.innerHTML = ``
-})
+getData();
