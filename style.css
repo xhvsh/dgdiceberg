@@ -10,8 +10,7 @@
 
 body {
   min-height: 100dvh;
-  background: linear-gradient(#148d90, #012) 0 100dvh / 100% calc(100% - 100dvh)
-    no-repeat;
+  background: linear-gradient(#148d90, #012) 0 100dvh / 100% calc(100% - 100dvh) no-repeat;
 }
 
 .container {
@@ -31,8 +30,7 @@ body {
   padding: 0.8rem 1.2rem;
   border-radius: 10px;
   cursor: pointer;
-  text-shadow: 2px 2px 5px black, -2px 2px 5px black, 2px -2px 5px black,
-    -2px -2px 5px black;
+  text-shadow: 2px 2px 5px black, -2px 2px 5px black, 2px -2px 5px black, -2px -2px 5px black;
   background: rgba(0, 0, 0, 0.3);
   text-align: center;
   min-width: 10%;

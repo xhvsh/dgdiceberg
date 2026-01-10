@@ -8,10 +8,7 @@ async function getData() {
 
     if (Array.isArray(data?.data)) {
       data.data.forEach((item) => {
-        let explanation =
-          item?.explanation === ""
-            ? "Samborowi nie chcialo sie dodawac wyjasnienia"
-            : item?.explanation;
+        let explanation = item?.explanation === "" ? "Samborowi nie chcialo sie dodawac wyjasnienia" : item?.explanation;
 
         if (item?.phrase) {
           container.innerHTML += `<div class="content">${item.phrase}<div class='tooltip'>${explanation}</div></div>`;
