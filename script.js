@@ -1,9 +1,11 @@
-const api = "https://xhvsh.github.io/icebergapi/iceberg.json",
-  container = document.querySelector(".container");
+const container = document.querySelector(".container");
 
 async function getData() {
   try {
-    const response = await fetch(api);
+    const gistRes = await fetch(`https://api.github.com/gists/ec578df51c8684fd9729ee86958c4dbc`);
+    const gistJson = await gistRes.json();
+    const rawUrl = gistJson.files["api.json"].raw_url;
+    const response = await fetch(rawUrl);
     const data = await response.json();
 
     if (Array.isArray(data?.data)) {
