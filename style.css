@@ -14,6 +14,7 @@ body {
 }
 
 .container {
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -34,6 +35,18 @@ body {
   background: rgba(0, 0, 0, 0.3);
   text-align: center;
   min-width: 10%;
+  z-index: auto;
+
+  opacity: 0;
+  transition: opacity 0.3s linear, transform 0.4s ease;
+  transform: translateY(20px);
+  will-change: opacity, transform;
+}
+.content.show {
+  transform: translateY(0);
+}
+.content:hover {
+  z-index: 5;
 }
 
 .tooltip {
@@ -45,7 +58,7 @@ body {
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  z-index: 1;
+  z-index: 6;
   bottom: 110%;
   pointer-events: none;
   transition: all 0.3s ease;

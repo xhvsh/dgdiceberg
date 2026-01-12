@@ -1,3 +1,29 @@
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      const ratio = entry.intersectionRatio;
+
+      if (ratio > 0) {
+        entry.target.classList.add("show");
+        entry.target.style.opacity = ratio.toFixed(2);
+      } else {
+        entry.target.classList.remove("show");
+        entry.target.style.opacity = 0;
+      }
+    });
+  },
+  {
+    threshold: Array.from({ length: 101 }, (_, i) => i / 100),
+  }
+);
+
+function addBottom() {
+  const tooltips = document.querySelectorAll(".tooltip");
+  for (let i = 0; i < Math.min(40, tooltips.length); i++) {
+    tooltips[i].classList.add("bottom");
+  }
+}
+
 const container = document.querySelector(".container");
 
 async function getData() {
@@ -8,20 +34,25 @@ async function getData() {
     const response = await fetch(rawUrl);
     const data = await response.json();
 
-    if (Array.isArray(data?.data)) {
-      data.data.forEach((item) => {
-        let explanation = item?.explanation === "" ? "Samborowi nie chcialo sie dodawac wyjasnienia" : item?.explanation;
+    if (!Array.isArray(data?.data)) return;
 
-        if (item?.phrase) {
-          container.innerHTML += `<div class="content">${item.phrase}<div class='tooltip'>${explanation}</div></div>`;
-        }
-      });
-    }
+    data.data.forEach((item) => {
+      const explanation = item?.explanation === "" ? "Samborowi nie chcialo sie dodawac wyjasnienia" : item?.explanation;
 
-    let tooltips = document.querySelectorAll(".tooltip");
-    for (let i = 0; i < 40; i++) {
-      tooltips[i].classList.add("bottom");
-    }
+      if (!item?.phrase) return;
+
+      const el = document.createElement("div");
+      el.className = "content";
+      el.innerHTML = `
+        ${item.phrase}
+        <div class="tooltip">${explanation}</div>
+      `;
+
+      container.appendChild(el);
+      observer.observe(el);
+    });
+
+    addBottom();
   } catch (err) {
     console.error(err);
   }
